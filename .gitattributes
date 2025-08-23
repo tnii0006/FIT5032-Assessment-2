@@ -1,27 +1,44 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import HealthInfo from '../views/HealthInfo.vue'
-import LifeServices from '../views/LifeServices.vue'
-import SocialInfo from '../views/SocialInfo.vue'
-import DigitalSkills from '../views/DigitalSkills.vue'
-import About from '../views/About.vue'
-import Login from '../views/Login.vue'
-import Register from '../views/Register.vue'
+# Auto detect text files and perform LF normalization
+* text=auto
 
-const routes = [
-  { path: '/', name: 'Home', component: Home },
-  { path: '/health', name: 'HealthInfo', component: HealthInfo },
-  { path: '/life', name: 'LifeServices', component: LifeServices },
-  { path: '/social', name: 'SocialInfo', component: SocialInfo },
-  { path: '/skills', name: 'DigitalSkills', component: DigitalSkills },
-  { path: '/about', name: 'About', component: About },
-  { path: '/login', name: 'Login', component: Login },
-  { path: '/register', name: 'Register', component: Register },
-]
+# Force the following filetypes to have unix eols, so Windows does not break them
+*.sh text eol=lf
+*.conf text eol=lf
+*.cfg text eol=lf
+*.sh text eol=lf
+*.md text eol=lf
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-})
-
-export default router
+# Ensure these files are treated as binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.mov binary
+*.mp4 binary
+*.mp3 binary
+*.flv binary
+*.fla binary
+*.swf binary
+*.gz binary
+*.zip binary
+*.7z binary
+*.ttf binary
+*.eot binary
+*.woff binary
+*.woff2 binary
+*.pyc binary
+*.pdf binary
+*.ez binary
+*.bz2 binary
+*.swp binary
+*.image binary
+*.deb binary
+*.rpm binary
+*.exe binary
+*.msi binary
+*.msm binary
+*.msp binary
+*.cab binary
+*.msm binary
+*.msp binary

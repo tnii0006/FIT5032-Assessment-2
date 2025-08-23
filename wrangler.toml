@@ -1,0 +1,17 @@
+name = "fit5032-assessment-2"
+compatibility_date = "2025-08-23"
+
+[build]
+command = "npm run build"
+
+[build.upload]
+format = "service-worker"
+
+[site]
+bucket = "./dist"
+
+[env.production]
+name = "fit5032-assessment-2-prod"
+
+[env.staging]
+name = "fit5032-assessment-2-staging"

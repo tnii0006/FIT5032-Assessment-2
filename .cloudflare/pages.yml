@@ -1,0 +1,46 @@
+# Cloudflare Pages Configuration
+project: fit5032-assessment-2
+build:
+  command: npm run build
+  output: dist
+  root: /
+
+# Environment variables
+env:
+  NODE_ENV: production
+
+# Headers
+headers:
+  - url: /*
+    headers:
+      X-Frame-Options: DENY
+      X-Content-Type-Options: nosniff
+      X-XSS-Protection: 1; mode=block
+      Referrer-Policy: strict-origin-when-cross-origin
+
+# Redirects
+redirects:
+  - from: /tables
+    to: /index.html
+    status: 200
+  - from: /health
+    to: /index.html
+    status: 200
+  - from: /skills
+    to: /index.html
+    status: 200
+  - from: /about
+    to: /index.html
+    status: 200
+  - from: /login
+    to: /index.html
+    status: 200
+  - from: /register
+    to: /index.html
+    status: 200
+  - from: /email
+    to: /index.html
+    status: 200
+  - from: /*
+    to: /index.html
+    status: 200
