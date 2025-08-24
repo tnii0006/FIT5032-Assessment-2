@@ -50,13 +50,17 @@
                 <i class="bi bi-people me-1"></i>Data Tables
               </router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link d-flex align-items-center" to="/serverless">
+                <i class="fas fa-cloud me-2"></i>Serverless Functions
+              </router-link>
+            </li>
+
           </ul>
           <ul class="navbar-nav ms-auto gap-2">
             <template v-if="user.isLoggedIn">
               <li class="nav-item">
-                <span class="navbar-text me-3 fs-5"
-                  >Welcome, {{ user.info.email || 'User' }}!</span
-                >
+                <span class="navbar-text me-3 fs-5">Welcome, {{ user.info.email || 'User' }}!</span>
               </li>
               <li class="nav-item">
                 <button

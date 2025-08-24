@@ -1,0 +1,25 @@
+{
+  "name": "fit5032-cloud-functions",
+  "version": "1.0.0",
+  "description": "Cloudflare Workers for BR(E.1) Cloud Functions",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:prod": "wrangler deploy --env production",
+    "deploy:dev": "wrangler deploy --env development",
+    "test": "node test/test-functions.js"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "serverless",
+    "functions"
+  ],
+  "author": "FIT5032 Student",
+  "license": "MIT",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240129.0",
+    "wrangler": "^3.0.0"
+  }
+}

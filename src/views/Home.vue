@@ -58,30 +58,53 @@
     <div class="mt-5 pt-5">
       <h2 class="text-center fw-bold mb-5">Our Service Highlights</h2>
       <div class="row g-4">
-        <div class="col-md-4">
+        <div class="col-md-6 col-lg-4">
           <div class="card h-100 border-0 shadow-sm hover-lift">
-            <div class="card-body d-flex flex-column align-items-center text-center p-4">
-              <i class="bi bi-calendar-check fs-1 text-primary mb-3"></i>
-              <h5 class="card-title fw-bold">Easy Scheduling</h5>
-              <p class="card-text">Book and manage appointments through our user-friendly online platform.</p>
+            <div class="card-body d-flex flex-column p-4">
+              <div
+                class="d-flex align-items-center justify-content-center w-50px h-50px rounded-circle bg-primary bg-opacity-10 mb-3"
+              >
+                <i class="bi bi-heart-pulse fs-3 text-primary"></i>
+              </div>
+              <h5 class="card-title fw-bold">Health Monitoring</h5>
+              <p class="card-text mb-3">
+                Track vital signs, medication schedules, and wellness metrics for comprehensive health management.
+              </p>
+              <router-link to="/health" class="btn btn-primary mt-auto">Learn More</router-link>
             </div>
           </div>
         </div>
-        <div class="col-md-4">
+
+        <div class="col-md-6 col-lg-4">
           <div class="card h-100 border-0 shadow-sm hover-lift">
-            <div class="card-body d-flex flex-column align-items-center text-center p-4">
-              <i class="bi bi-person-check fs-1 text-primary mb-3"></i>
-              <h5 class="card-title fw-bold">Trusted Providers</h5>
-              <p class="card-text">All our caregivers are professionally trained and thoroughly vetted.</p>
+            <div class="card-body d-flex flex-column p-4">
+              <div
+                class="d-flex align-items-center justify-content-center w-50px h-50px rounded-circle bg-success bg-opacity-10 mb-3"
+              >
+                <i class="bi bi-laptop fs-3 text-success"></i>
+              </div>
+              <h5 class="card-title fw-bold">Digital Skills Training</h5>
+              <p class="card-text mb-3">
+                Master essential digital literacy skills with personalized training programs designed for seniors.
+              </p>
+              <router-link to="/skills" class="btn btn-success mt-auto">Start Learning</router-link>
             </div>
           </div>
         </div>
-        <div class="col-md-4">
+
+        <div class="col-md-6 col-lg-4">
           <div class="card h-100 border-0 shadow-sm hover-lift">
-            <div class="card-body d-flex flex-column align-items-center text-center p-4">
-              <i class="bi bi-shield-check fs-1 text-primary mb-3"></i>
-              <h5 class="card-title fw-bold">Safety First</h5>
-              <p class="card-text">Comprehensive safety protocols and emergency response systems in place.</p>
+            <div class="card-body d-flex flex-column p-4">
+              <div
+                class="d-flex align-items-center justify-content-center w-50px h-50px rounded-circle bg-info bg-opacity-10 mb-3"
+              >
+                <i class="bi bi-cloud-functions fs-3 text-info"></i>
+              </div>
+              <h5 class="card-title fw-bold">Cloud Functions Demo</h5>
+              <p class="card-text mb-3">
+                Experience our serverless functions in action with real-time testing and performance monitoring.
+              </p>
+              <router-link to="/cloud-functions" class="btn btn-info mt-auto">Try Demo</router-link>
             </div>
           </div>
         </div>

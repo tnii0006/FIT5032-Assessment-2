@@ -7,6 +7,8 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import EmailSender from '../views/EmailSender.vue'
 import DataTables from '../views/DataTables.vue'
+import ServerlessFunctions from '../views/ServerlessFunctions.vue'
+
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -17,6 +19,8 @@ const routes = [
   { path: '/register', name: 'Register', component: Register },
   { path: '/email', name: 'EmailSender', component: EmailSender },
   { path: '/tables', name: 'DataTables', component: DataTables },
+  { path: '/serverless', name: 'ServerlessFunctions', component: ServerlessFunctions },
+
 ]
 const router = createRouter({
   history: createWebHistory(),

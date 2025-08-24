@@ -1,0 +1,16 @@
+name = "fit5032-cloud-functions"
+compatibility_date = "2024-01-15"
+main = "src/index.js"
+
+[vars]
+ENVIRONMENT = "development"
+
+# 生产环境配置
+[env.production]
+name = "fit5032-cloud-functions-prod"
+vars = { ENVIRONMENT = "production" }
+
+# 开发环境配置
+[env.development]
+name = "fit5032-cloud-functions-dev"
+vars = { ENVIRONMENT = "development" }
