@@ -7,18 +7,11 @@
           <div class="hero-icon">
             <i class="fas fa-cloud"></i>
           </div>
-          <h1 class="hero-title">
-            Serverless Functions
-          </h1>
-          <p class="hero-subtitle">
-            Cloud-Native Functions powered by Cloudflare Workers
-          </p>
-          <div class="hero-badge">
-            <span class="badge-text">BR (E.1) Implementation</span>
-          </div>
+          <h1 class="hero-title">Serverless Functions</h1>
+          <p class="hero-subtitle">Cloud-Native Functions powered by Cloudflare Workers</p>
         </div>
       </div>
-      
+
       <!-- API Status Section -->
       <div class="api-status-section">
         <div class="status-card">
@@ -30,7 +23,7 @@
             <div class="endpoint-info">
               <span class="endpoint-label">Base URL:</span>
               <code class="endpoint-url">{{ apiBaseUrl }}</code>
-              <div class="status-indicator" :class="{ 'online': isOnline, 'offline': !isOnline }">
+              <div class="status-indicator" :class="{ online: isOnline, offline: !isOnline }">
                 <span class="status-dot"></span>
                 {{ isOnline ? 'Online' : 'Checking...' }}
               </div>
@@ -53,8 +46,8 @@
             </div>
           </div>
           <div class="card-body">
-            <button 
-              @click="testHealthCheck" 
+            <button
+              @click="testHealthCheck"
               class="function-btn health-btn"
               :disabled="loading.health"
             >
@@ -85,17 +78,13 @@
           </div>
           <div class="card-body">
             <div class="btn-group">
-              <button 
-                @click="testGetUsers" 
-                class="function-btn user-btn"
-                :disabled="loading.users"
-              >
+              <button @click="testGetUsers" class="function-btn user-btn" :disabled="loading.users">
                 <i class="fas fa-list" v-if="!loading.users"></i>
                 <i class="fas fa-spinner fa-spin" v-else></i>
                 <span>{{ loading.users ? 'Loading...' : 'Get Users' }}</span>
               </button>
-              <button 
-                @click="testRegisterUser" 
+              <button
+                @click="testRegisterUser"
                 class="function-btn user-btn-alt"
                 :disabled="loading.register"
               >
@@ -109,7 +98,9 @@
                 <i class="fas fa-user-check"></i>
                 <span>User Data</span>
               </div>
-              <pre class="result-content scrollable">{{ JSON.stringify(results.users || results.register, null, 2) }}</pre>
+              <pre class="result-content scrollable">{{
+                JSON.stringify(results.users || results.register, null, 2)
+              }}</pre>
             </div>
           </div>
         </div>
@@ -126,8 +117,8 @@
             </div>
           </div>
           <div class="card-body">
-            <button 
-              @click="testValidateData" 
+            <button
+              @click="testValidateData"
               class="function-btn validation-btn"
               :disabled="loading.validate"
             >
@@ -158,8 +149,8 @@
           </div>
           <div class="card-body">
             <div class="btn-group">
-              <button 
-                @click="testGetSkills" 
+              <button
+                @click="testGetSkills"
                 class="function-btn skills-btn"
                 :disabled="loading.skills"
               >
@@ -167,8 +158,8 @@
                 <i class="fas fa-spinner fa-spin" v-else></i>
                 <span>{{ loading.skills ? 'Loading...' : 'Get Skills' }}</span>
               </button>
-              <button 
-                @click="testSkillStats" 
+              <button
+                @click="testSkillStats"
                 class="function-btn skills-btn-alt"
                 :disabled="loading.skillStats"
               >
@@ -182,7 +173,9 @@
                 <i class="fas fa-tools"></i>
                 <span>Skills Data</span>
               </div>
-              <pre class="result-content scrollable">{{ JSON.stringify(results.skills || results.skillStats, null, 2) }}</pre>
+              <pre class="result-content scrollable">{{
+                JSON.stringify(results.skills || results.skillStats, null, 2)
+              }}</pre>
             </div>
           </div>
         </div>
@@ -199,8 +192,8 @@
             </div>
           </div>
           <div class="card-body">
-            <button 
-              @click="testEmailProcess" 
+            <button
+              @click="testEmailProcess"
               class="function-btn email-btn"
               :disabled="loading.email"
             >
@@ -230,8 +223,8 @@
             </div>
           </div>
           <div class="card-body">
-            <button 
-              @click="testGenerateReport" 
+            <button
+              @click="testGenerateReport"
               class="function-btn report-btn"
               :disabled="loading.report"
             >
@@ -244,7 +237,9 @@
                 <i class="fas fa-chart-line"></i>
                 <span>Report Data</span>
               </div>
-              <pre class="result-content scrollable">{{ JSON.stringify(results.report, null, 2) }}</pre>
+              <pre class="result-content scrollable">{{
+                JSON.stringify(results.report, null, 2)
+              }}</pre>
             </div>
           </div>
         </div>
@@ -261,8 +256,8 @@
             </div>
           </div>
           <div class="card-body">
-            <button 
-              @click="testDataBackup" 
+            <button
+              @click="testDataBackup"
               class="function-btn backup-btn"
               :disabled="loading.backup"
             >
@@ -292,8 +287,8 @@
             </div>
           </div>
           <div class="card-body">
-            <button 
-              @click="testSkillAnalysis" 
+            <button
+              @click="testSkillAnalysis"
               class="function-btn analysis-btn"
               :disabled="loading.analysis"
             >
@@ -323,8 +318,8 @@
             </div>
           </div>
           <div class="card-body">
-            <button 
-              @click="testSendNotification" 
+            <button
+              @click="testSendNotification"
               class="function-btn notification-btn"
               :disabled="loading.notification"
             >
@@ -353,15 +348,12 @@
           <p class="control-subtitle">Manage and test all serverless functions</p>
         </div>
         <div class="control-actions">
-          <button 
-            @click="clearAllResults" 
-            class="control-btn clear-btn"
-          >
+          <button @click="clearAllResults" class="control-btn clear-btn">
             <i class="fas fa-trash-alt"></i>
             <span>Clear All Results</span>
           </button>
-          <button 
-            @click="testAllFunctions" 
+          <button
+            @click="testAllFunctions"
             class="control-btn test-all-btn"
             :disabled="isAnyLoading"
           >
@@ -393,15 +385,15 @@ export default {
         report: false,
         backup: false,
         analysis: false,
-        notification: false
+        notification: false,
       },
-      results: {}
+      results: {},
     }
   },
   computed: {
     isAnyLoading() {
-      return Object.values(this.loading).some(loading => loading)
-    }
+      return Object.values(this.loading).some((loading) => loading)
+    },
   },
   mounted() {
     this.checkApiStatus()
@@ -422,21 +414,21 @@ export default {
           method: options.method || 'GET',
           headers: {
             'Content-Type': 'application/json',
-            ...options.headers
+            ...options.headers,
           },
-          body: options.body ? JSON.stringify(options.body) : undefined
+          body: options.body ? JSON.stringify(options.body) : undefined,
         })
-        
+
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}: ${response.statusText}`)
         }
-        
+
         return await response.json()
       } catch (error) {
         return {
           error: true,
           message: error.message,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         }
       }
     },
@@ -459,11 +451,11 @@ export default {
         name: 'John Smith',
         email: 'john.smith@example.com',
         age: 72,
-        skills: ['Computer Basics', 'Internet Safety']
+        skills: ['Computer Basics', 'Internet Safety'],
       }
       this.results.register = await this.makeApiCall('/api/users/register', {
         method: 'POST',
-        body: userData
+        body: userData,
       })
       this.loading.register = false
     },
@@ -474,11 +466,11 @@ export default {
         name: 'Jane Doe',
         email: 'jane.doe@example.com',
         age: 68,
-        phone: '+1-555-0123'
+        phone: '+1-555-0123',
       }
       this.results.validate = await this.makeApiCall('/api/validate', {
         method: 'POST',
-        body: testData
+        body: testData,
       })
       this.loading.validate = false
     },
@@ -500,11 +492,11 @@ export default {
       const emailData = {
         recipient: 'elderly@example.com',
         subject: 'Digital Skills Workshop Reminder',
-        content: 'This is a reminder about your upcoming digital skills workshop.'
+        content: 'This is a reminder about your upcoming digital skills workshop.',
       }
       this.results.email = await this.makeApiCall('/api/email/process', {
         method: 'POST',
-        body: emailData
+        body: emailData,
       })
       this.loading.email = false
     },
@@ -517,13 +509,18 @@ export default {
 
     async testDataBackup() {
       this.loading.backup = true
-      this.results.backup = await this.makeApiCall('/api/backup')
+      this.results.backup = await this.makeApiCall('/api/backup', {
+        method: 'POST',
+      })
       this.loading.backup = false
     },
 
     async testSkillAnalysis() {
       this.loading.analysis = true
-      this.results.analysis = await this.makeApiCall('/api/skills/analyze?userId=1')
+      this.results.analysis = await this.makeApiCall('/api/skills/analyze', {
+        method: 'POST',
+        body: { userId: 1 },
+      })
       this.loading.analysis = false
     },
 
@@ -532,11 +529,11 @@ export default {
       const notificationData = {
         recipients: ['user1@example.com', 'user2@example.com'],
         message: 'New digital skills resources are now available!',
-        type: 'info'
+        type: 'info',
       }
       this.results.notification = await this.makeApiCall('/api/notifications/send', {
         method: 'POST',
-        body: notificationData
+        body: notificationData,
       })
       this.loading.notification = false
     },
@@ -553,20 +550,20 @@ export default {
         this.testGenerateReport,
         this.testDataBackup,
         this.testSkillAnalysis,
-        this.testSendNotification
+        this.testSendNotification,
       ]
 
       for (const func of functions) {
         await func()
         // Small delay between calls
-        await new Promise(resolve => setTimeout(resolve, 500))
+        await new Promise((resolve) => setTimeout(resolve, 500))
       }
     },
 
     clearAllResults() {
       this.results = {}
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -575,7 +572,11 @@ export default {
 .serverless-functions {
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
 }
 
 .container {
@@ -1115,37 +1116,37 @@ export default {
   .hero-title {
     font-size: 2.5rem;
   }
-  
+
   .hero-subtitle {
     font-size: 1rem;
   }
-  
+
   .functions-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .function-card {
     padding: 1.5rem;
   }
-  
+
   .btn-group {
     flex-direction: column;
   }
-  
+
   .function-btn {
     min-width: auto;
   }
-  
+
   .control-actions {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .control-btn {
     min-width: 200px;
   }
-  
+
   .endpoint-info {
     flex-direction: column;
     align-items: flex-start;
@@ -1157,22 +1158,22 @@ export default {
   .hero-title {
     font-size: 2rem;
   }
-  
+
   .container {
     padding-left: 1rem;
     padding-right: 1rem;
   }
-  
+
   .function-card {
     padding: 1rem;
   }
-  
+
   .card-header {
     flex-direction: column;
     text-align: center;
     gap: 0.5rem;
   }
-  
+
   .card-icon {
     align-self: center;
   }

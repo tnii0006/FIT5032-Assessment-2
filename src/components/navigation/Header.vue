@@ -5,7 +5,7 @@
       role="navigation"
       aria-label="Main navigation"
     >
-      <div class="container-fluid">
+      <div class="container-fluid ps-2 ps-md-3 ps-lg-3 ps-xl-4">
         <router-link class="navbar-brand fw-bold fs-3" to="/" aria-label="Elderly Wellbeing - Home">
           <img
             src="/favicon.ico"
@@ -28,95 +28,44 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2" role="menubar">
-            <li class="nav-item" role="none">
-              <router-link
-                class="nav-link d-flex align-items-center"
-                to="/health"
-                role="menuitem"
-                aria-label="Health monitoring and wellness"
-              >
-                <i class="fas fa-heartbeat me-2" aria-hidden="true"></i>Health
-              </router-link>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2 ms-3 ms-lg-4 ms-xl-5" role="menubar">
+            <li class="nav-item dropdown" role="none">
+              <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="wellbeingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-heartbeat me-2" aria-hidden="true"></i>Wellbeing
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="wellbeingDropdown">
+                <li><router-link class="dropdown-item d-flex align-items-center" to="/health" role="menuitem"><i class="fas fa-heartbeat me-2" aria-hidden="true"></i>Health</router-link></li>
+                <li><router-link class="dropdown-item d-flex align-items-center" to="/skills" role="menuitem"><i class="fas fa-laptop me-2" aria-hidden="true"></i>Digital Skills</router-link></li>
+                <li><router-link class="dropdown-item d-flex align-items-center" to="/about" role="menuitem"><i class="fas fa-info-circle me-2" aria-hidden="true"></i>About</router-link></li>
+              </ul>
             </li>
-            <li class="nav-item" role="none">
-              <router-link
-                class="nav-link d-flex align-items-center"
-                to="/skills"
-                role="menuitem"
-                aria-label="Digital skills training"
-              >
-                <i class="fas fa-laptop me-2" aria-hidden="true"></i>Digital Skills
-              </router-link>
+            <li class="nav-item dropdown" role="none">
+              <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="dataToolsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-kanban me-2" aria-hidden="true"></i>Data & Tools
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dataToolsDropdown">
+                <li><router-link class="dropdown-item d-flex align-items-center" to="/email" role="menuitem"><i class="bi bi-envelope me-2" aria-hidden="true"></i>Email</router-link></li>
+                <li><router-link class="dropdown-item d-flex align-items-center" to="/tables" role="menuitem"><i class="bi bi-people me-2" aria-hidden="true"></i>Data Tables</router-link></li>
+                <li><router-link class="dropdown-item d-flex align-items-center" to="/serverless" role="menuitem"><i class="fas fa-cloud me-2" aria-hidden="true"></i>Serverless Functions</router-link></li>
+              </ul>
             </li>
-            <li class="nav-item" role="none">
-              <router-link
-                class="nav-link d-flex align-items-center"
-                to="/about"
-                role="menuitem"
-                aria-label="About our platform"
-              >
-                <i class="fas fa-info-circle me-2" aria-hidden="true"></i>About
-              </router-link>
-            </li>
-            <li class="nav-item" role="none">
-              <router-link
-                class="nav-link d-flex align-items-center"
-                to="/email"
-                role="menuitem"
-                aria-label="Email services"
-              >
-                <i class="bi bi-envelope me-1" aria-hidden="true"></i>Email
-              </router-link>
-            </li>
-            <li class="nav-item" role="none">
-              <router-link
-                class="nav-link d-flex align-items-center"
-                to="/tables"
-                role="menuitem"
-                aria-label="Data tables and information"
-              >
-                <i class="bi bi-people me-1" aria-hidden="true"></i>Data Tables
-              </router-link>
-            </li>
-            <li class="nav-item" role="none">
-              <router-link
-                class="nav-link d-flex align-items-center"
-                to="/serverless"
-                role="menuitem"
-                aria-label="Serverless functions demo"
-              >
-                <i class="fas fa-cloud me-2" aria-hidden="true"></i>Serverless Functions
-              </router-link>
-            </li>
-            <li class="nav-item" role="none">
-              <router-link
-                class="nav-link d-flex align-items-center"
-                to="/geolocation"
-                role="menuitem"
-                aria-label="Geographic location services"
-              >
-                <i class="fas fa-map-marker-alt me-2" aria-hidden="true"></i>Geo Location
-              </router-link>
-            </li>
-            <li class="nav-item" role="none">
-              <router-link
-                class="nav-link d-flex align-items-center"
-                to="/appointments"
-                role="menuitem"
-                aria-label="Appointment booking system"
-              >
-                <i class="fas fa-calendar-alt me-2" aria-hidden="true"></i>Appointments
-              </router-link>
+            <li class="nav-item dropdown" role="none">
+              <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="locationBookingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-map-marker-alt me-2" aria-hidden="true"></i>Location & Booking
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="locationBookingDropdown">
+                <li><router-link class="dropdown-item d-flex align-items-center" to="/geolocation" role="menuitem"><i class="fas fa-map-marker-alt me-2" aria-hidden="true"></i>Geo Location</router-link></li>
+                <li><router-link class="dropdown-item d-flex align-items-center" to="/appointments" role="menuitem"><i class="fas fa-calendar-alt me-2" aria-hidden="true"></i>Appointments</router-link></li>
+              </ul>
             </li>
           </ul>
-          <ul class="navbar-nav ms-auto gap-2" role="menubar" aria-label="User account actions">
+          <!-- spacer to push user section further right on large screens -->
+          <div class="flex-grow-1 d-none d-lg-block"></div>
+          <ul class="navbar-nav ms-auto ms-lg-4 ms-xl-5 gap-2 flex-nowrap align-items-center" role="menubar" aria-label="User account actions">
             <template v-if="user.isLoggedIn">
               <li class="nav-item" role="none">
-                <span class="navbar-text me-3 fs-5" role="status" aria-live="polite"
-                  >Welcome, {{ user.info.email || 'User' }}!</span
-                >
-              </li>
+                <span class="navbar-text me-2 ms-lg-2 fs-6 welcome-text d-none d-md-inline" role="status" aria-live="polite">Welcome, {{ truncatedEmail }}!</span>
+               </li>
               <li class="nav-item" role="none">
                 <button
                   class="btn btn-gradient rounded-pill px-4 py-2 fw-bold"
@@ -134,7 +83,7 @@
             <template v-else>
               <li class="nav-item" role="none">
                 <router-link
-                  class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold me-2"
+                  class="btn btn-outline-light rounded-pill px-3 py-2 fw-bold me-2 text-nowrap"
                   to="/login"
                   role="menuitem"
                   aria-label="Login to your account"
@@ -143,7 +92,7 @@
               </li>
               <li class="nav-item" role="none">
                 <router-link
-                  class="btn btn-light rounded-pill px-4 py-2 fw-bold"
+                  class="btn btn-light rounded-pill px-3 py-2 fw-bold text-nowrap"
                   to="/register"
                   role="menuitem"
                   aria-label="Sign up for a new account"
@@ -159,10 +108,21 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import user from '@/store/user'
 
 const router = useRouter()
+
+const truncatedEmail = computed(() => {
+  const email = (user?.info?.email) || 'User'
+  if (email.length <= 18) return email
+  const parts = email.split('@')
+  if (parts.length !== 2) return email.slice(0, 15) + '…'
+  const [name, domain] = parts
+  const shortName = name.length > 6 ? name.slice(0, 6) + '…' : name
+  return `${shortName}@${domain}`
+})
 
 const handleLogout = async () => {
   try {
@@ -195,9 +155,22 @@ const handleLogout = async () => {
 }
 
 .nav-link {
-  padding: 0.8rem 1.2rem;
+  padding: 0.7rem 1rem;
   border-radius: 0.5rem;
   transition: all 0.3s ease;
+}
+
+.btn {
+  white-space: nowrap;
+}
+
+.btn-light,
+.btn-outline-light {
+  min-width: 86px;
+}
+
+.navbar {
+  font-size: 0.95rem;
 }
 
 .nav-link:hover {
@@ -218,6 +191,13 @@ const handleLogout = async () => {
 
 .navbar-brand:hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+.welcome-text {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Responsive Design */
@@ -248,21 +228,5 @@ const handleLogout = async () => {
 }
 
 @media (max-width: 576px) {
-  .navbar-brand {
-    font-size: 1.5rem;
-  }
-  .navbar-toggler {
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-    width: 30px;
-    height: 30px;
-    background-color: #4f46e5;
-    border-radius: 50%;
-  }
-  .navbar-toggler-icon {
-    width: 15px;
-    height: 15px;
-  }
 }
 </style>

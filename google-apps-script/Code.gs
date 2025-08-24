@@ -46,8 +46,9 @@ function doPost(e) {
     // 发送邮件
     const result = sendEmailWithAttachment(requestData)
 
-    return ContentService.createTextOutput(JSON.stringify(result))
-      .setMimeType(ContentService.MimeType.JSON)
+    return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(
+      ContentService.MimeType.JSON,
+    )
   } catch (error) {
     Logger.log('Error in doPost: ' + error.toString())
     Logger.log('Request object: ' + JSON.stringify(e))
@@ -59,11 +60,26 @@ function doPost(e) {
         debug: {
           hasEvent: !!e,
           hasPostData: !!(e && e.postData),
-          hasContents: !!(e && e.postData && e.postData.contents)
-        }
+          hasContents: !!(e && e.postData && e.postData.contents),
+        },
       }),
     ).setMimeType(ContentService.MimeType.JSON)
   }
+}
+
+/**
+ * 处理GET请求 - 用于测试服务状态
+ * @returns {Object} 服务状态响应
+ */
+function doGet() {
+  return ContentService.createTextOutput(
+    JSON.stringify({
+      success: true,
+      message: 'Email Service is running',
+      timestamp: new Date().toISOString(),
+      service: 'Google Apps Script Email API',
+    }),
+  ).setMimeType(ContentService.MimeType.JSON)
 }
 
 /**
@@ -71,12 +87,11 @@ function doPost(e) {
  * @returns {Object} CORS响应
  */
 function doOptions() {
-  const output = ContentService.createTextOutput('')
-    .setMimeType(ContentService.MimeType.TEXT)
-  
+  const output = ContentService.createTextOutput('').setMimeType(ContentService.MimeType.TEXT)
+
   // 注意：Google Apps Script的ContentService不支持setHeaders方法
   // CORS头部需要通过其他方式处理，或者在部署时配置
-  
+
   return output
 }
 
@@ -301,18 +316,18 @@ function testEmailFunction() {
  */
 function testDoPost() {
   console.log('=== 测试修复后的 doPost 函数 ===')
-  
+
   // 测试1: 正常请求
   const normalRequest = {
     postData: {
       contents: JSON.stringify({
         to_email: 'test@example.com',
         subject: '测试邮件',
-        message: '这是一封测试邮件'
-      })
-    }
+        message: '这是一封测试邮件',
+      }),
+    },
   }
-  
+
   console.log('测试1 - 正常请求:')
   try {
     const result1 = doPost(normalRequest)
@@ -320,7 +335,7 @@ function testDoPost() {
   } catch (error) {
     console.log('错误:', error.toString())
   }
-  
+
   // 测试2: 空请求
   console.log('\n测试2 - 空请求:')
   try {
@@ -329,14 +344,14 @@ function testDoPost() {
   } catch (error) {
     console.log('错误:', error.toString())
   }
-  
+
   // 测试3: 无效 JSON
   const invalidJsonRequest = {
     postData: {
-      contents: 'invalid json string'
-    }
+      contents: 'invalid json string',
+    },
   }
-  
+
   console.log('\n测试3 - 无效 JSON:')
   try {
     const result3 = doPost(invalidJsonRequest)
@@ -344,6 +359,6 @@ function testDoPost() {
   } catch (error) {
     console.log('错误:', error.toString())
   }
-  
+
   console.log('\n=== 测试完成 ===')
 }

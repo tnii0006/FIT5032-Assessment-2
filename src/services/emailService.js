@@ -2,10 +2,16 @@
 const GOOGLE_APPS_SCRIPT_CONFIG = {
   // 替换为你的Google Apps Script Web应用URL
   API_URL:
-    'https://script.google.com/macros/s/AKfycbwIYuc-h59Qk5X6ArGBPtJe2XNlBtr3MwASlbbNUbSStaDGBbc-lWOBVr5XunZrHebayQ/exec',
+    'https://script.google.com/macros/s/AKfycbyW7CIsgjcSXLXutxjzXJi24cqOEmhc3JZjh73UShi0SQ7pKTXiucY61ToLjqN_Z-0uBw/exec',
   // 请求超时时间（毫秒）
   TIMEOUT: 30000,
 }
+
+// 支持通过环境变量覆盖 GAS URL（Vite 提供 import.meta.env，直接读取即可）
+const GAS_WEBAPP_URL =
+  import.meta && import.meta.env && import.meta.env.VITE_GAS_WEBAPP_URL
+    ? import.meta.env.VITE_GAS_WEBAPP_URL
+    : GOOGLE_APPS_SCRIPT_CONFIG.API_URL
 
 /**
  * Google Apps Script 邮件发送服务
@@ -13,19 +19,14 @@ const GOOGLE_APPS_SCRIPT_CONFIG = {
 class EmailService {
   constructor() {
     // 验证配置
-    if (
-      !GOOGLE_APPS_SCRIPT_CONFIG.API_URL ||
-      GOOGLE_APPS_SCRIPT_CONFIG.API_URL.includes(
-        'AKfycbwIYuc-h59Qk5X6ArGBPtJe2XNlBtr3MwASlbbNUbSStaDGBbc-lWOBVr5XunZrHebayQ',
-      )
-    ) {
+    if (!GAS_WEBAPP_URL) {
       console.warn(
-        '⚠️ Google Apps Script API URL not configured, please set the correct URL in GOOGLE_APPS_SCRIPT_CONFIG',
+        '⚠️ Google Apps Script API URL not configured, please set the correct URL via VITE_GAS_WEBAPP_URL or GOOGLE_APPS_SCRIPT_CONFIG',
       )
     }
 
     console.log('Google Apps Script email service initialized:', {
-      API_URL: GOOGLE_APPS_SCRIPT_CONFIG.API_URL,
+      API_URL: GAS_WEBAPP_URL,
       TIMEOUT: GOOGLE_APPS_SCRIPT_CONFIG.TIMEOUT,
     })
   }
@@ -36,24 +37,45 @@ class EmailService {
    */
   async validateConnection() {
     console.log('🔍 Starting connection validation...')
-    console.log('📍 API URL:', GOOGLE_APPS_SCRIPT_CONFIG.API_URL)
+    console.log('📍 API URL:', GAS_WEBAPP_URL)
 
     try {
-      // 发送测试请求验证连接
-      const testData = {
-        to_email: 'test@example.com',
-        subject: 'Connection Test',
-        message: 'This is a connection test message',
+      // 先通过 GET doGet 进行轻量级连通性测试（避免触发预检）
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), GOOGLE_APPS_SCRIPT_CONFIG.TIMEOUT)
+
+      const pingUrl = GAS_WEBAPP_URL + (GAS_WEBAPP_URL.includes('?') ? '&' : '?') + 'ping=1'
+      const resp = await fetch(pingUrl, {
+        method: 'GET',
+        cache: 'no-store',
+        signal: controller.signal,
+      })
+
+      clearTimeout(timeoutId)
+
+      if (!resp.ok) {
+        throw new Error(`HTTP error on ping! status: ${resp.status}`)
       }
 
-      console.log('📤 Sending test request with data:', testData)
-      const response = await this.makeRequest(testData, true) // true表示测试模式
-      console.log('✅ Connection test successful:', response)
+      // 尝试解析 JSON（如果不是 JSON 也不强制）
+      let data = null
+      try {
+        const ct = resp.headers.get('content-type') || ''
+        if (ct.includes('application/json')) {
+          data = await resp.json()
+        } else {
+          const text = await resp.text()
+          data = { raw: text }
+        }
+      } catch (_) {
+        // ignore parse error
+      }
 
+      console.log('✅ Connection ping successful:', data)
       return {
         valid: true,
         message: 'Google Apps Script connection successful',
-        response: response,
+        response: data,
       }
     } catch (error) {
       let validationMessage = 'Google Apps Script connection failed'
@@ -92,7 +114,7 @@ class EmailService {
    */
   async makeRequest(data, isTest = false) {
     console.log('🚀 Making request to Google Apps Script...')
-    console.log('📍 URL:', GOOGLE_APPS_SCRIPT_CONFIG.API_URL)
+    console.log('📍 URL:', GAS_WEBAPP_URL)
     console.log('📦 Request data:', data)
 
     const controller = new AbortController()
@@ -100,11 +122,10 @@ class EmailService {
 
     try {
       console.log('⏳ Sending fetch request...')
-      const response = await fetch(GOOGLE_APPS_SCRIPT_CONFIG.API_URL, {
+      // 避免 CORS 预检：不设置 application/json 头，直接发送字符串（text/plain 属于 safelisted）
+      const response = await fetch(GAS_WEBAPP_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        // 不显式设置 Content-Type，保持为浏览器默认的 text/plain;charset=UTF-8
         body: JSON.stringify(data),
         signal: controller.signal,
       })
@@ -227,49 +248,58 @@ class EmailService {
         message: emailData.message,
       }
 
-      // 处理附件
+      // 处理附件：支持 File 或 预先转换好的 {name,data,mimeType,size}
       if (emailData.attachment) {
-        // 验证文件大小和类型
-        if (!this.validateFileSize(emailData.attachment)) {
-          return {
-            success: false,
-            message: 'Attachment size exceeds 10MB limit',
+        let attachmentPayload = null
+
+        if (typeof emailData.attachment === 'object' && 'data' in emailData.attachment) {
+          // 已经是 Base64 对象
+          attachmentPayload = emailData.attachment
+        } else {
+          // 认为是 File 对象，校验并转换
+          const file = emailData.attachment
+
+          if (!this.validateFileSize(file)) {
+            return {
+              success: false,
+              message: 'Attachment size exceeds 10MB limit',
+            }
+          }
+
+          if (!this.validateFileType(file)) {
+            return {
+              success: false,
+              message: 'Unsupported file type',
+            }
+          }
+
+          try {
+            attachmentPayload = await this.fileToBase64(file)
+          } catch (error) {
+            return {
+              success: false,
+              message: 'Attachment processing failed: ' + error.message,
+            }
           }
         }
 
-        if (!this.validateFileType(emailData.attachment)) {
-          return {
-            success: false,
-            message: 'Unsupported file type',
-          }
-        }
-
-        // 转换文件为Base64
-        try {
-          const attachmentData = await this.fileToBase64(emailData.attachment)
-          requestData.attachment = attachmentData
-        } catch (error) {
-          return {
-            success: false,
-            message: 'Attachment processing failed: ' + error.message,
-          }
-        }
+        requestData.attachment = attachmentPayload
       }
 
       // 发送请求到Google Apps Script
       const response = await this.makeRequest(requestData)
 
-      if (response.success) {
+      if (response && response.success) {
         return {
           success: true,
-          message: 'Email sent successfully',
+          message: response.message || 'Email sent successfully',
           data: response.data,
         }
       } else {
         return {
           success: false,
-          message: response.message || 'Email sending failed',
-          error: response.error,
+          message: (response && response.message) || 'Email sending failed',
+          error: response && response.error,
         }
       }
     } catch (error) {
@@ -307,39 +337,55 @@ class EmailService {
     }
   }
 
-  /**
-   * 发送简单邮件（无附件）
-   * @param {Object} emailData - 邮件数据
-   * @returns {Promise} 发送结果
-   */
+  // 发送简单邮件（无附件）
   async sendSimpleEmail(emailData) {
     return this.sendEmailWithAttachment(emailData)
   }
 
-  /**
-   * 批量发送邮件
-   * @param {Object} bulkEmailData - 批量邮件数据
-   * @param {Array} bulkEmailData.recipients - 收件人邮箱数组
-   * @param {string} bulkEmailData.subject - 邮件主题
-   * @param {string} bulkEmailData.message - 邮件内容
-   * @param {File} bulkEmailData.attachment - 附件文件（可选）
-   * @returns {Promise} 发送结果
-   */
+  // 批量发送邮件
   async sendBulkEmail(bulkEmailData) {
-    const { recipients, subject, message, attachment } = bulkEmailData
+    const { recipients, subject, message, attachment } = bulkEmailData || {}
 
-    if (!recipients || recipients.length === 0) {
+    if (!recipients || !Array.isArray(recipients) || recipients.length === 0) {
       return {
         success: false,
         message: 'No recipients specified for bulk email',
       }
     }
 
-    // 验证基本字段
     if (!subject || !message) {
       return {
         success: false,
         message: 'Missing required fields: subject or content',
+      }
+    }
+
+    // 预处理附件（如果有，转换一次）
+    let preConvertedAttachment = null
+    if (attachment) {
+      try {
+        if (typeof attachment === 'object' && 'data' in attachment) {
+          preConvertedAttachment = attachment
+        } else {
+          if (!this.validateFileSize(attachment)) {
+            return {
+              success: false,
+              message: 'Attachment size exceeds 10MB limit',
+            }
+          }
+          if (!this.validateFileType(attachment)) {
+            return {
+              success: false,
+              message: 'Unsupported file type',
+            }
+          }
+          preConvertedAttachment = await this.fileToBase64(attachment)
+        }
+      } catch (error) {
+        return {
+          success: false,
+          message: 'Attachment processing failed: ' + error.message,
+        }
       }
     }
 
@@ -350,89 +396,36 @@ class EmailService {
       errors: [],
     }
 
-    // 处理附件（如果有）
-    let attachmentData = null
-    if (attachment) {
-      try {
-        // 验证文件
-        if (!this.validateFileSize(attachment)) {
-          return {
-            success: false,
-            message: 'Attachment size exceeds 10MB limit',
+    await Promise.all(
+      recipients.map(async (email) => {
+        try {
+          if (!this.validateEmail(email)) {
+            results.failed++
+            results.errors.push({ email, error: 'Invalid email format' })
+            return
           }
-        }
 
-        if (!this.validateFileType(attachment)) {
-          return {
-            success: false,
-            message: 'Unsupported file type',
+          const res = await this.sendEmailWithAttachment({
+            to_email: email,
+            subject,
+            message,
+            attachment: preConvertedAttachment,
+          })
+
+          if (res.success) {
+            results.successful++
+          } else {
+            results.failed++
+            results.errors.push({ email, error: res.message })
           }
-        }
-
-        // 转换附件为Base64（只需要转换一次）
-        attachmentData = await this.fileToBase64(attachment)
-      } catch (error) {
-        return {
-          success: false,
-          message: 'Attachment processing failed: ' + error.message,
-        }
-      }
-    }
-
-    // 批量发送邮件，每个收件人单独发送
-    const sendPromises = recipients.map(async (email) => {
-      try {
-        // Validate email format
-        if (!this.validateEmail(email)) {
+        } catch (err) {
           results.failed++
-          results.errors.push({
-            email: email,
-            error: 'Invalid email format',
-          })
-          return { email, success: false, message: 'Invalid email format' }
+          results.errors.push({ email, error: err.message })
         }
+      }),
+    )
 
-        const emailData = {
-          to_email: email,
-          subject: subject,
-          message: message,
-        }
-
-        // 添加附件数据（如果有）
-        if (attachmentData) {
-          emailData.attachment = attachmentData
-        }
-
-        const result = await this.sendEmailWithAttachment(emailData)
-
-        if (result.success) {
-          results.successful++
-        } else {
-          results.failed++
-          results.errors.push({
-            email: email,
-            error: result.message,
-          })
-        }
-
-        return { email, success: result.success, message: result.message }
-      } catch (error) {
-        results.failed++
-        results.errors.push({
-          email: email,
-          error: error.message,
-        })
-        return { email, success: false, message: error.message }
-      }
-    })
-
-    // 等待所有邮件发送完成
-    await Promise.all(sendPromises)
-
-    // 返回批量发送结果
-    const success = results.successful > 0
     let resultMessage
-
     if (results.successful === results.total) {
       resultMessage = `All ${results.total} emails sent successfully!`
     } else if (results.successful > 0) {
@@ -442,43 +435,37 @@ class EmailService {
     }
 
     return {
-      success: success,
+      success: results.successful > 0,
       message: resultMessage,
       data: results,
     }
   }
 
-  /**
-   * 验证邮箱格式
-   * @param {string} email - 邮箱地址
-   * @returns {boolean} 是否有效
-   */
+  // 校验邮箱
   validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email)
   }
 
-  /**
-   * 验证文件大小（限制在10MB以内）
-   * @param {File} file - 文件对象
-   * @returns {boolean} 是否有效
-   */
+  // 校验文件大小（<=10MB）
   validateFileSize(file) {
-    const maxSize = 10 * 1024 * 1024 // 10MB
-    return file.size <= maxSize
+    const maxSize = 10 * 1024 * 1024
+    return file && file.size <= maxSize
   }
 
-  /**
-   * 验证文件类型
-   * @param {File} file - 文件对象
-   * @param {Array} allowedTypes - 允许的文件类型数组
-   * @returns {boolean} 是否有效
-   */
+  // 校验文件类型
   validateFileType(
     file,
-    allowedTypes = ['image/jpeg', 'image/png', 'application/pdf', 'text/plain'],
+    allowedTypes = [
+      'image/jpeg',
+      'image/png',
+      'application/pdf',
+      'text/plain',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    ],
   ) {
-    return allowedTypes.includes(file.type)
+    return !!(file && allowedTypes.includes(file.type))
   }
 }
 
