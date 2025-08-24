@@ -1,40 +1,52 @@
 <template>
   <div id="app-container">
+    <!-- Skip to main content link for keyboard navigation -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
     <Header />
 
-    <main class="flex-shrink-0 py-4 bg-app-main">
+    <main id="main-content" class="flex-shrink-0 py-4 bg-app-main" role="main" tabindex="-1">
       <router-view />
     </main>
 
-    <footer class="footer mt-auto py-4 bg-white border-top">
+    <footer class="footer mt-auto py-4 bg-white border-top" role="contentinfo">
       <template v-if="!['/login', '/register'].includes($route.path)">
         <!-- Comments Section -->
-        <div class="container mt-4">
-          <h5 class="text-center">User Comments and Ratings</h5>
-          <div class="rating-section">
-            <p>Average Rating: {{ averageRating.toFixed(1) }} / 5</p>
-            <div v-for="(comment, index) in comments" :key="index" class="comment">
+        <section class="container mt-4" aria-labelledby="comments-heading">
+          <h5 id="comments-heading" class="text-center">User Comments and Ratings</h5>
+          <div class="rating-section" role="region" aria-label="Rating information">
+            <p aria-live="polite">Average Rating: {{ averageRating.toFixed(1) }} out of 5 stars</p>
+            <div v-for="(comment, index) in comments" :key="index" class="comment" role="article">
               <p>
                 <strong>{{ comment.username }}</strong
                 >: {{ comment.text }}
               </p>
-              <p>Rating: {{ comment.rating }} / 5</p>
+              <p>Rating: {{ comment.rating }} out of 5 stars</p>
             </div>
           </div>
-          <div class="submit-section mt-3">
+          <form class="submit-section mt-3" @submit.prevent="submitComment" role="form" aria-labelledby="comment-form-heading">
+            <h6 id="comment-form-heading" class="sr-only">Submit a comment</h6>
+            <label for="comment-input" class="sr-only">Your comment</label>
             <input
+              id="comment-input"
               v-model="newComment.text"
               type="text"
               placeholder="Enter your comment"
               class="form-control mb-2"
+              aria-required="true"
+              aria-describedby="comment-help"
             />
-            <select v-model="newComment.rating" class="form-select mb-2">
+            <div id="comment-help" class="sr-only">Enter your feedback about our services</div>
+            <label for="rating-select" class="sr-only">Your rating</label>
+            <select id="rating-select" v-model="newComment.rating" class="form-select mb-2" aria-required="true">
               <option disabled value="">Select Rating</option>
-              <option v-for="n in 5" :key="n" :value="n">{{ n }}</option>
+              <option v-for="n in 5" :key="n" :value="n">{{ n }} star{{ n > 1 ? 's' : '' }}</option>
             </select>
-            <button @click="submitComment" class="btn btn-gradient">Submit Comment</button>
-          </div>
-        </div>
+            <button type="submit" class="btn btn-gradient" :disabled="!newComment.text || !newComment.rating">
+              Submit Comment
+            </button>
+          </form>
+        </section>
       </template>
       <div class="container text-center">
         <span class="text-muted">© 2024 Elderly Wellbeing Platform. All Rights Reserved.</span>

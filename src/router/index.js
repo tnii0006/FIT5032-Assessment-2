@@ -8,6 +8,7 @@ import Register from '../views/Register.vue'
 import EmailSender from '../views/EmailSender.vue'
 import DataTables from '../views/DataTables.vue'
 import ServerlessFunctions from '../views/ServerlessFunctions.vue'
+import GeoLocation from '../views/GeoLocation.vue'
 
 
 const routes = [
@@ -20,6 +21,7 @@ const routes = [
   { path: '/email', name: 'EmailSender', component: EmailSender },
   { path: '/tables', name: 'DataTables', component: DataTables },
   { path: '/serverless', name: 'ServerlessFunctions', component: ServerlessFunctions },
+  { path: '/geolocation', name: 'GeoLocation', component: GeoLocation },
 
 ]
 const router = createRouter({
