@@ -46,6 +46,8 @@ export default {
         return handleRegisterUser(request);
       } else if (path === '/api/users/validate' && method === 'POST') {
         return handleValidateData(request);
+      } else if (path === '/api/validate' && method === 'POST') {
+        return handleValidateData(request);
       } else if (path === '/api/skills' && method === 'GET') {
         return handleGetSkills(url);
       } else if (path === '/api/skills' && method === 'POST') {
@@ -58,11 +60,15 @@ export default {
         return handleGetSkillStats();
       } else if (path === '/api/email/process' && method === 'POST') {
         return handleProcessEmailData(request);
-      } else if (path === '/api/reports/generate' && method === 'POST') {
+      } else if (path === '/api/reports/generate' && (method === 'POST' || method === 'GET')) {
         return handleGenerateReport(request);
       } else if (path === '/api/data/backup' && method === 'POST') {
         return handleBackupData();
+      } else if (path === '/api/backup' && method === 'POST') {
+        return handleBackupData();
       } else if (path === '/api/skills/analyze' && method === 'POST') {
+        return handleAnalyzeSkills(request);
+      } else if (path === '/api/analyze' && method === 'POST') {
         return handleAnalyzeSkills(request);
       } else if (path === '/api/notifications/send' && method === 'POST') {
         return handleSendNotification(request);
@@ -401,8 +407,15 @@ async function handleProcessEmailData(request) {
 
 // 10. 生成报告
 async function handleGenerateReport(request) {
-  const reportRequest = await request.json();
-  const reportType = reportRequest.type || 'user_summary';
+  let reportType = 'user_summary';
+  
+  if (request.method === 'GET') {
+    const url = new URL(request.url);
+    reportType = url.searchParams.get('type') || 'user_summary';
+  } else {
+    const reportRequest = await request.json();
+    reportType = reportRequest.type || 'user_summary';
+  }
   
   let reportData = {};
   
