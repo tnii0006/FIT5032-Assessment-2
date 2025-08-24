@@ -12,11 +12,19 @@
             src="https://images.pexels.com/photos/3822839/pexels-photo-3822839.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             class="img-fluid rounded-4 shadow-sm"
             alt="Professional caregiver assisting an elderly person with a warm smile, demonstrating compassionate care and support"
-            style="width: 100%; max-width: 600px; height: auto; object-fit: cover; aspect-ratio: 4/3;"
+            style="
+              width: 100%;
+              max-width: 600px;
+              height: auto;
+              object-fit: cover;
+              aspect-ratio: 4/3;
+            "
             loading="lazy"
           />
           <div class="position-absolute top-0 start-0 p-3">
-            <span class="badge bg-primary" role="status" aria-label="New services available">New Services</span>
+            <span class="badge bg-primary" role="status" aria-label="New services available"
+              >New Services</span
+            >
           </div>
         </figure>
       </div>
@@ -24,11 +32,14 @@
       <div class="col-md-6">
         <article>
           <h2 class="fw-bold mb-4" id="mission-heading">Our Mission</h2>
-          <p class="mb-4">We strive to provide compassionate care and support services that empower elderly individuals to maintain their independence, dignity, and quality of life.</p>
+          <p class="mb-4">
+            We strive to provide compassionate care and support services that empower elderly
+            individuals to maintain their independence, dignity, and quality of life.
+          </p>
 
           <section aria-labelledby="services-heading">
             <h3 id="services-heading" class="sr-only">Our Key Services</h3>
-            
+
             <div class="d-flex align-items-start gap-3 mb-3" role="article">
               <i class="bi bi-heart-pulse fs-3 text-primary flex-shrink-0" aria-hidden="true"></i>
               <div>
@@ -49,16 +60,34 @@
               <i class="bi bi-building fs-3 text-primary flex-shrink-0" aria-hidden="true"></i>
               <div>
                 <h4 class="h5">Life Services</h4>
-                <p class="mb-0">Daily living assistance and home services tailored to individual needs.</p>
+                <p class="mb-0">
+                  Daily living assistance and home services tailored to individual needs.
+                </p>
               </div>
             </div>
           </section>
 
           <nav class="d-grid gap-2 d-md-block" aria-label="Main action buttons">
-            <a href="/services" class="btn btn-primary btn-lg me-md-2" role="button" aria-describedby="services-desc">Explore Services</a>
-            <div id="services-desc" class="sr-only">Learn more about our comprehensive elderly care services</div>
-            <a href="/contact" class="btn btn-outline-primary btn-lg" role="button" aria-describedby="contact-desc">Contact Us</a>
-            <div id="contact-desc" class="sr-only">Get in touch with our care team for personalized assistance</div>
+            <a
+              href="/services"
+              class="btn btn-primary btn-lg me-md-2"
+              role="button"
+              aria-describedby="services-desc"
+              >Explore Services</a
+            >
+            <div id="services-desc" class="sr-only">
+              Learn more about our comprehensive elderly care services
+            </div>
+            <a
+              href="/contact"
+              class="btn btn-outline-primary btn-lg"
+              role="button"
+              aria-describedby="contact-desc"
+              >Contact Us</a
+            >
+            <div id="contact-desc" class="sr-only">
+              Get in touch with our care team for personalized assistance
+            </div>
           </nav>
         </article>
       </div>
@@ -72,7 +101,9 @@
 
 <style scoped>
 .hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 .hover-lift:hover {
   transform: translateY(-5px);

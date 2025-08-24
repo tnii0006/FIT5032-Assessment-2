@@ -1,6 +1,10 @@
 <template>
   <header role="banner">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary shadow-sm" role="navigation" aria-label="Main navigation">
+    <nav
+      class="navbar navbar-expand-lg navbar-dark bg-gradient-primary shadow-sm"
+      role="navigation"
+      aria-label="Main navigation"
+    >
       <div class="container-fluid">
         <router-link class="navbar-brand fw-bold fs-3" to="/" aria-label="Elderly Wellbeing - Home">
           <img
@@ -26,46 +30,92 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2" role="menubar">
             <li class="nav-item" role="none">
-              <router-link class="nav-link d-flex align-items-center" to="/health" role="menuitem" aria-label="Health monitoring and wellness">
+              <router-link
+                class="nav-link d-flex align-items-center"
+                to="/health"
+                role="menuitem"
+                aria-label="Health monitoring and wellness"
+              >
                 <i class="fas fa-heartbeat me-2" aria-hidden="true"></i>Health
               </router-link>
             </li>
             <li class="nav-item" role="none">
-              <router-link class="nav-link d-flex align-items-center" to="/skills" role="menuitem" aria-label="Digital skills training">
+              <router-link
+                class="nav-link d-flex align-items-center"
+                to="/skills"
+                role="menuitem"
+                aria-label="Digital skills training"
+              >
                 <i class="fas fa-laptop me-2" aria-hidden="true"></i>Digital Skills
               </router-link>
             </li>
             <li class="nav-item" role="none">
-              <router-link class="nav-link d-flex align-items-center" to="/about" role="menuitem" aria-label="About our platform">
+              <router-link
+                class="nav-link d-flex align-items-center"
+                to="/about"
+                role="menuitem"
+                aria-label="About our platform"
+              >
                 <i class="fas fa-info-circle me-2" aria-hidden="true"></i>About
               </router-link>
             </li>
             <li class="nav-item" role="none">
-              <router-link class="nav-link d-flex align-items-center" to="/email" role="menuitem" aria-label="Email services">
+              <router-link
+                class="nav-link d-flex align-items-center"
+                to="/email"
+                role="menuitem"
+                aria-label="Email services"
+              >
                 <i class="bi bi-envelope me-1" aria-hidden="true"></i>Email
               </router-link>
             </li>
             <li class="nav-item" role="none">
-              <router-link class="nav-link d-flex align-items-center" to="/tables" role="menuitem" aria-label="Data tables and information">
+              <router-link
+                class="nav-link d-flex align-items-center"
+                to="/tables"
+                role="menuitem"
+                aria-label="Data tables and information"
+              >
                 <i class="bi bi-people me-1" aria-hidden="true"></i>Data Tables
               </router-link>
             </li>
             <li class="nav-item" role="none">
-              <router-link class="nav-link d-flex align-items-center" to="/serverless" role="menuitem" aria-label="Serverless functions demo">
+              <router-link
+                class="nav-link d-flex align-items-center"
+                to="/serverless"
+                role="menuitem"
+                aria-label="Serverless functions demo"
+              >
                 <i class="fas fa-cloud me-2" aria-hidden="true"></i>Serverless Functions
               </router-link>
             </li>
             <li class="nav-item" role="none">
-              <router-link class="nav-link d-flex align-items-center" to="/geolocation" role="menuitem" aria-label="Geographic location services">
+              <router-link
+                class="nav-link d-flex align-items-center"
+                to="/geolocation"
+                role="menuitem"
+                aria-label="Geographic location services"
+              >
                 <i class="fas fa-map-marker-alt me-2" aria-hidden="true"></i>Geo Location
               </router-link>
             </li>
-
+            <li class="nav-item" role="none">
+              <router-link
+                class="nav-link d-flex align-items-center"
+                to="/appointments"
+                role="menuitem"
+                aria-label="Appointment booking system"
+              >
+                <i class="fas fa-calendar-alt me-2" aria-hidden="true"></i>Appointments
+              </router-link>
+            </li>
           </ul>
           <ul class="navbar-nav ms-auto gap-2" role="menubar" aria-label="User account actions">
             <template v-if="user.isLoggedIn">
               <li class="nav-item" role="none">
-                <span class="navbar-text me-3 fs-5" role="status" aria-live="polite">Welcome, {{ user.info.email || 'User' }}!</span>
+                <span class="navbar-text me-3 fs-5" role="status" aria-live="polite"
+                  >Welcome, {{ user.info.email || 'User' }}!</span
+                >
               </li>
               <li class="nav-item" role="none">
                 <button
@@ -73,7 +123,9 @@
                   @click="handleLogout"
                   :disabled="user.loading"
                   role="menuitem"
-                  :aria-label="user.loading ? 'Logging out, please wait' : 'Logout from your account'"
+                  :aria-label="
+                    user.loading ? 'Logging out, please wait' : 'Logout from your account'
+                  "
                 >
                   {{ user.loading ? 'Logging out...' : 'Logout' }}
                 </button>
@@ -90,8 +142,8 @@
                 >
               </li>
               <li class="nav-item" role="none">
-                <router-link 
-                  class="btn btn-light rounded-pill px-4 py-2 fw-bold" 
+                <router-link
+                  class="btn btn-light rounded-pill px-4 py-2 fw-bold"
                   to="/register"
                   role="menuitem"
                   aria-label="Sign up for a new account"

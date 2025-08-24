@@ -9,7 +9,7 @@ import EmailSender from '../views/EmailSender.vue'
 import DataTables from '../views/DataTables.vue'
 import ServerlessFunctions from '../views/ServerlessFunctions.vue'
 import GeoLocation from '../views/GeoLocation.vue'
-
+import AppointmentBooking from '../views/AppointmentBooking.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -22,7 +22,7 @@ const routes = [
   { path: '/tables', name: 'DataTables', component: DataTables },
   { path: '/serverless', name: 'ServerlessFunctions', component: ServerlessFunctions },
   { path: '/geolocation', name: 'GeoLocation', component: GeoLocation },
-
+  { path: '/appointments', name: 'AppointmentBooking', component: AppointmentBooking },
 ]
 const router = createRouter({
   history: createWebHistory(),

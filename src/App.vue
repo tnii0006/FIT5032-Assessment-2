@@ -1,8 +1,5 @@
 <template>
   <div id="app-container">
-    <!-- Skip to main content link for keyboard navigation -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    
     <Header />
 
     <main id="main-content" class="flex-shrink-0 py-4 bg-app-main" role="main" tabindex="-1">
@@ -24,7 +21,12 @@
               <p>Rating: {{ comment.rating }} out of 5 stars</p>
             </div>
           </div>
-          <form class="submit-section mt-3" @submit.prevent="submitComment" role="form" aria-labelledby="comment-form-heading">
+          <form
+            class="submit-section mt-3"
+            @submit.prevent="submitComment"
+            role="form"
+            aria-labelledby="comment-form-heading"
+          >
             <h6 id="comment-form-heading" class="sr-only">Submit a comment</h6>
             <label for="comment-input" class="sr-only">Your comment</label>
             <input
@@ -38,11 +40,20 @@
             />
             <div id="comment-help" class="sr-only">Enter your feedback about our services</div>
             <label for="rating-select" class="sr-only">Your rating</label>
-            <select id="rating-select" v-model="newComment.rating" class="form-select mb-2" aria-required="true">
+            <select
+              id="rating-select"
+              v-model="newComment.rating"
+              class="form-select mb-2"
+              aria-required="true"
+            >
               <option disabled value="">Select Rating</option>
               <option v-for="n in 5" :key="n" :value="n">{{ n }} star{{ n > 1 ? 's' : '' }}</option>
             </select>
-            <button type="submit" class="btn btn-gradient" :disabled="!newComment.text || !newComment.rating">
+            <button
+              type="submit"
+              class="btn btn-gradient"
+              :disabled="!newComment.text || !newComment.rating"
+            >
               Submit Comment
             </button>
           </form>
